@@ -92,7 +92,7 @@ const Home = () => {
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {categories.slice(0, 4).map((category) => (
+          {Array.isArray(categories) && categories.slice(0, 4).map((category) (
             <Link
               key={category.id}
               to={`/products?category=${category.id}`}
