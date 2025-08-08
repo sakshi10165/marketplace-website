@@ -11,6 +11,8 @@ export const useAuth = () => {
   }
   return context;
 };
+const API_BASE_URL = 'https://marketplace-website-paav.onrender.com';
+
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -36,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         try {
           // Set the token in axios headers first
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          const response = await axios.get('/auth/me');
+          const response = await axios.get(`${API_BASE_URL}/auth/me`);
           console.log('User authenticated:', response.data);
           setUser(response.data);
         } catch (error) {
@@ -55,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       console.log('Attempting login for:', email);
-      const response = await axios.post('/auth/login', { email, password });
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
       const { access_token } = response.data;
       
       console.log('Login successful, token received');
@@ -68,7 +70,7 @@ export const AuthProvider = ({ children }) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
       
       // Get user info
-      const userResponse = await axios.get('/auth/me');
+      const userResponse = await axios.get(`${API_BASE_URL}/auth/me`);
       console.log('User info retrieved:', userResponse.data);
       setUser(userResponse.data);
       
@@ -84,7 +86,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('/auth/register', userData);
+      const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
       setUser(response.data);
       toast.success('Registration successful! Please log in.');
       return true;
