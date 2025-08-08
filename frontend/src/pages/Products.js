@@ -14,9 +14,9 @@ const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
-
+  const API_BASE_URL = 'https://marketplace-website-paav.onrender.com';
   useEffect(() => {
-    const categoryId = searchParams.get('category');
+    const categoryId = searchParams.get(`${API_BASE_URL}/category`);
     if (categoryId) {
       setSelectedCategory(categoryId);
     }
@@ -30,8 +30,8 @@ const Products = () => {
     setLoading(true);
     try {
       const [categoriesRes, productsRes] = await Promise.all([
-        axios.get('/categories'),
-        axios.get(`/products${selectedCategory ? `?category_id=${selectedCategory}` : ''}`)
+        axios.get(`${API_BASE_URL}/categories`),
+        axios.get(`${API_BASE_URL}/products${selectedCategory ? `?category_id=${selectedCategory}` : ''}`)
       ]);
       
       setCategories(categoriesRes.data);
@@ -51,10 +51,10 @@ const Products = () => {
     await addToCart(productId);
   };
 
-  const filteredProducts = products.filter(product =>
+  const filteredProducts = Array.isArray(products) ? products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  ):[];
 
   if (loading) {
     return (
