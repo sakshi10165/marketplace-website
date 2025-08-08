@@ -12,14 +12,16 @@ const Home = () => {
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
 
+  const API_BASE_URL = 'https://marketplace-website-paav.onrender.com';
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [categoriesRes, productsRes] = await Promise.all([
-          axios.get('/categories'),
-          axios.get('/products?limit=6')
+          axios.get(`${API_BASE_URL}/categories`),
+          axios.get(`${API_BASE_URL}/products?limit=6`)
         ]);
-        
+
         setCategories(Array.isArray(categoriesRes.data) ? categoriesRes.data : []);
         setFeaturedProducts(Array.isArray(productsRes.data) ? productsRes.data : []);
       } catch (error) {
@@ -83,7 +85,7 @@ const Home = () => {
         </div>
       </section>
 
-     {/* Categories Section */}
+      {/* Categories Section */}
       <section>
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold text-gray-900">Shop by Category</h2>
@@ -112,7 +114,6 @@ const Home = () => {
         </div>
       </section>
 
-
       {/* Featured Products */}
       <section>
         <div className="flex items-center justify-between mb-8">
@@ -122,43 +123,47 @@ const Home = () => {
           </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProducts.map((product) => (
-            <div key={product.id} className="card p-6">
-              <div className="aspect-square bg-gray-100 rounded-lg mb-4 flex items-center justify-center">
-                {product.image_url ? (
-                  <img
-                    src={product.image_url}
-                    alt={product.name}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                ) : (
-                  <Package className="w-16 h-16 text-gray-400" />
-                )}
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
-                  <p className="text-sm text-gray-600 line-clamp-2">{product.description}</p>
+          {Array.isArray(featuredProducts) && featuredProducts.length > 0 ? (
+            featuredProducts.map((product) => (
+              <div key={product.id} className="card p-6">
+                <div className="aspect-square bg-gray-100 rounded-lg mb-4 flex items-center justify-center">
+                  {product.image_url ? (
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  ) : (
+                    <Package className="w-16 h-16 text-gray-400" />
+                  )}
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="text-sm text-gray-600">4.5</span>
+                <div className="space-y-3">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
+                    <p className="text-sm text-gray-600 line-clamp-2">{product.description}</p>
                   </div>
-                  <span className="font-bold text-lg text-primary-600">
-                    ${product.price}
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <span className="text-sm text-gray-600">4.5</span>
+                    </div>
+                    <span className="font-bold text-lg text-primary-600">
+                      ${product.price}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => handleAddToCart(product.id)}
+                    className="w-full btn-primary flex items-center justify-center"
+                  >
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Add to Cart
+                  </button>
                 </div>
-                <button
-                  onClick={() => handleAddToCart(product.id)}
-                  className="w-full btn-primary flex items-center justify-center"
-                >
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  Add to Cart
-                </button>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No featured products available</p>
+          )}
         </div>
       </section>
 
@@ -191,4 +196,4 @@ const Home = () => {
   );
 };
 
-export default Home; 
+export default Home;
