@@ -83,7 +83,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Categories Section */}
+     {/* Categories Section */}
       <section>
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold text-gray-900">Shop by Category</h2>
@@ -92,21 +92,26 @@ const Home = () => {
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {Array.isArray(categories) && categories.slice(0, 4).map((category) (
-            <Link
-              key={category.id}
-              to={`/products?category=${category.id}`}
-              className="card p-6 text-center hover:scale-105 transition-transform duration-200"
-            >
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Package className="w-8 h-8 text-primary-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">{category.name}</h3>
-              <p className="text-sm text-gray-600">{category.description}</p>
-            </Link>
-          ))}
+          {Array.isArray(categories) && categories.length > 0 ? (
+            categories.slice(0, 4).map((category) => (
+              <Link
+                key={category.id}
+                to={`/products?category=${category.id}`}
+                className="card p-6 text-center hover:scale-105 transition-transform duration-200"
+              >
+                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Package className="w-8 h-8 text-primary-600" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">{category.name}</h3>
+                <p className="text-sm text-gray-600">{category.description}</p>
+              </Link>
+            ))
+          ) : (
+            <p>No categories available</p>
+          )}
         </div>
       </section>
+
 
       {/* Featured Products */}
       <section>
