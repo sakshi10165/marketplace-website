@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
-
+const API_BASE_URL = 'https://marketplace-website-paav.onrender.com';
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
@@ -32,7 +32,7 @@ export const CartProvider = ({ children }) => {
     
     setLoading(true);
     try {
-      const response = await axios.get('/cart');
+      const response = await axios.get(`${API_BASE_URL}/cart`);
       console.log('Cart API response data:', response.data);
       if (Array.isArray(response.data)) {
         setCartItems(response.data);
@@ -55,7 +55,7 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.post('/cart', {
+      const response = await axios.post(`${API_BASE_URL}/cart`, {
         product_id: productId,
         quantity: quantity
       });
@@ -75,7 +75,7 @@ export const CartProvider = ({ children }) => {
     if (!isAuthenticated) return false;
 
     try {
-      await axios.put(`/cart/${cartItemId}`, { quantity });
+      await axios.put(`${API_BASE_URL}/cart/${cartItemId}`, { quantity });
       await loadCart();
       toast.success('Cart updated!');
       return true;
@@ -90,7 +90,7 @@ export const CartProvider = ({ children }) => {
     if (!isAuthenticated) return false;
 
     try {
-      await axios.delete(`/cart/${cartItemId}`);
+      await axios.delete(`${API_BASE_URL}/cart/${cartItemId}`);
       await loadCart();
       toast.success('Item removed from cart');
       return true;
@@ -105,7 +105,7 @@ export const CartProvider = ({ children }) => {
     if (!isAuthenticated) return false;
 
     try {
-      await axios.delete('/cart');
+      await axios.delete(`${API_BASE_URL}/cart`);
       setCartItems([]);
       toast.success('Cart cleared');
       return true;
