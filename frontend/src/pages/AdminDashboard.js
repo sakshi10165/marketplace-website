@@ -22,8 +22,8 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const [categoriesRes, productsRes] = await Promise.all([
-        axios.get('/categories'),
-        axios.get('/products')
+        axios.get('https://marketplace-website-paav.onrender.com/categories'),
+        axios.get('https://marketplace-website-paav.onrender.com/categories')
       ]);
       
       setCategories(categoriesRes.data);
