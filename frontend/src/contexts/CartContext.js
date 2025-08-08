@@ -33,7 +33,13 @@ export const CartProvider = ({ children }) => {
     setLoading(true);
     try {
       const response = await axios.get('/cart');
-      setCartItems(response.data);
+      console.log('Cart API response data:', response.data);
+      if (Array.isArray(response.data)) {
+        setCartItems(response.data);
+      } else {
+        console.warn('Cart data is not an array, resetting to empty array');
+        setCartItems([]);
+      }
     } catch (error) {
       console.error('Failed to load cart:', error);
       toast.error('Failed to load cart items');
@@ -111,12 +117,12 @@ export const CartProvider = ({ children }) => {
   };
 
   const getCartTotal = () => {
-    return cartItems.reduce((total, item) => {
-      return total + (item.product.price * item.quantity);
-    }, 0);
+    if (!Array.isArray(cartItems)) return 0;
+    return cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   };
 
   const getCartItemCount = () => {
+    if (!Array.isArray(cartItems)) return 0;
     return cartItems.reduce((count, item) => count + item.quantity, 0);
   };
 
