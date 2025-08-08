@@ -20,8 +20,8 @@ const Home = () => {
           axios.get('/products?limit=6')
         ]);
         
-        setCategories(categoriesRes.data);
-        setFeaturedProducts(productsRes.data);
+        setCategories(Array.isArray(categoriesRes.data) ? categoriesRes.data : []);
+        setFeaturedProducts(Array.isArray(productsRes.data) ? productsRes.data : []);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       } finally {
