@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     
     # Application
     debug: bool = os.getenv("DEBUG", "True").lower() == "true"
-    allowed_hosts: List[str] = ["http://localhost:3000", "http://127.0.0.1:3000", "https://marketplace-website-paav.onrender.com"]
+    allowed_hosts: List[str] = ["https://marketplace-website-paav.onrender.com"]
     
     class Config:
         env_file = ".env"
