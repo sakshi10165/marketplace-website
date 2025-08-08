@@ -33,8 +33,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://marketplace-website-paav.onrender.com"
+    allow_origins=["https://marketplace-website-six.vercel.app" 
         ],
     allow_credentials=True,
     allow_methods=["*"],
